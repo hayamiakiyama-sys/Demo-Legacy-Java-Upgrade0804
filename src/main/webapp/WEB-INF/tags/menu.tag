@@ -23,7 +23,7 @@
                     <span>Home</span>
                 </petclinic:menuItem>
 
-                <petclinic:menuItem active="${name eq 'owners'}" url="/owners/find.html" title="find owners">
+                <petclinic:menuItem active="${name eq 'owners'}" url="/owners/find" title="find owners">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     <span>Find owners</span>
                 </petclinic:menuItem>
@@ -38,7 +38,7 @@
                     <span>Monthly closing</span>
                 </petclinic:menuItem>
 
-                <petclinic:menuItem active="${name eq 'error'}" url="/oups.html"
+                <petclinic:menuItem active="${name eq 'error'}" url="/oups"
                             title="trigger a RuntimeException to see how it is handled">
                     <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
                     <span>Error</span>
