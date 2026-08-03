@@ -2,7 +2,9 @@ package org.springframework.samples.petclinic.service.billing;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class LegacyVisitImporter {
         List<ImportedVisit> visits = new ArrayList<ImportedVisit>();
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(file));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
             String line = reader.readLine();
             while (line != null) {
                 if (!line.trim().isEmpty()) {

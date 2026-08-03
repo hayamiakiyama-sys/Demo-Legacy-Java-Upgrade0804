@@ -1,14 +1,11 @@
 package org.springframework.samples.petclinic.service.billing;
 
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Date handling shared by the closing process. Formats follow the paper forms used by the clinic,
@@ -16,7 +13,6 @@ import org.slf4j.LoggerFactory;
  */
 public final class LegacyDateFormats {
 
-    private static final Logger LOG = LoggerFactory.getLogger(LegacyDateFormats.class);
 
     public static final String PERIOD_PATTERN = "yyyy/MM";
 
@@ -37,22 +33,14 @@ public final class LegacyDateFormats {
 
     /**
      * Formatter for visit dates imported from the old accounting system, where the year has two
-     * digits. The century window is pinned by writing SimpleDateFormat's internal
-     * defaultCenturyStart field directly.
+     * digits. The century window starts at the configured year.
      */
     public static SimpleDateFormat importedVisitFormat(int twoDigitYearStart) {
         SimpleDateFormat format = new SimpleDateFormat(IMPORTED_VISIT_PATTERN);
         Calendar start = Calendar.getInstance(TimeZone.getDefault());
         start.clear();
         start.set(Calendar.YEAR, twoDigitYearStart);
-        try {
-            Field field = SimpleDateFormat.class.getDeclaredField("defaultCenturyStart");
-            field.setAccessible(true);
-            field.set(format, start.getTime());
-        } catch (Exception ex) {
-            LOG.warn("could not pin the century window, falling back to the JDK default", ex);
-            format.set2DigitYearStart(start.getTime());
-        }
+        format.set2DigitYearStart(start.getTime());
         return format;
     }
 

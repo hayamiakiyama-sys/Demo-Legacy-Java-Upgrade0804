@@ -1,0 +1,13 @@
+Running org.springframework.samples.petclinic.service.billing.InvoiceCsvExporterTests
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.099 sec
+Running org.springframework.samples.petclinic.service.billing.ClosingSnapshotStoreTests
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 sec
+Running org.springframework.samples.petclinic.service.billing.MonthlyClosingServiceTests
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.578 sec
+Running org.springframework.samples.petclinic.service.billing.BillingRateLoaderTests
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 sec
+Running org.springframework.samples.petclinic.service.billing.LegacyVisitImporterTests
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 sec
+Running org.springframework.samples.petclinic.web.OwnerControllerTests
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.846 sec
+Tests run: 21, Failures: 0, Errors: 0, Skipped: 0
