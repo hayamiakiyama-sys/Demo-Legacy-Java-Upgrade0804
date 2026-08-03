@@ -18,8 +18,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 /**
- * Pins the CSV handed over to the accounting system (IF-05). The file is written with the platform
- * default charset, which changes in Java 18 and later (T-06), so the test reads it back the same way.
+ * Pins the CSV handed over to the accounting system (IF-05). The charset is now UTF-8 explicitly, so
+ * the output no longer depends on the platform default (T-06).
  */
 public class InvoiceCsvExporterTests {
 
@@ -33,7 +33,7 @@ public class InvoiceCsvExporterTests {
     public void writesOneRecordPerInvoiceLine() throws Exception {
         File csv = new InvoiceCsvExporter().export(invoices(), folder.getRoot(), "2013/01");
 
-        List<String> lines = readWithDefaultCharset(csv);
+        List<String> lines = readUtf8Lines(csv);
 
         assertEquals("invoices_2013-01.csv", csv.getName());
         assertEquals(3, lines.size());
@@ -43,10 +43,10 @@ public class InvoiceCsvExporterTests {
     }
 
     @Test
-    public void writesTheHeaderInThePlatformDefaultCharset() throws Exception {
+    public void writesTheHeaderInUtf8() throws Exception {
         File csv = new InvoiceCsvExporter().export(invoices(), folder.getRoot(), "2013/01");
 
-        byte[] expected = EXPECTED_HEADER.getBytes(System.getProperty("file.encoding"));
+        byte[] expected = EXPECTED_HEADER.getBytes("UTF-8");
         byte[] actual = new byte[expected.length];
         FileInputStream in = new FileInputStream(csv);
         try {
@@ -73,9 +73,9 @@ public class InvoiceCsvExporterTests {
         return calendar.getTime();
     }
 
-    private List<String> readWithDefaultCharset(File file) throws Exception {
+    private List<String> readUtf8Lines(File file) throws Exception {
         List<String> lines = new ArrayList<String>();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
         try {
             String line = reader.readLine();
             while (line != null) {

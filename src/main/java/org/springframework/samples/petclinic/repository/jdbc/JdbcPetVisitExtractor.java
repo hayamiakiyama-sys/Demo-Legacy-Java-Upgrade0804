@@ -1,11 +1,11 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,40 +15,39 @@
  */
 package org.springframework.samples.petclinic.repository.jdbc;
 
-import org.springframework.data.jdbc.core.OneToManyResultSetExtractor;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.samples.petclinic.model.Visit;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * {@link ResultSetExtractor} implementation by using the
- * {@link OneToManyResultSetExtractor} of Spring Data Core JDBC Extensions.
+ * {@link ResultSetExtractor} that folds the pets/visits outer join into one {@link JdbcPet} per pet.
  */
-public class JdbcPetVisitExtractor extends
-    OneToManyResultSetExtractor<JdbcPet, Visit, Integer> {
+public class JdbcPetVisitExtractor implements ResultSetExtractor<List<JdbcPet>> {
 
-    public JdbcPetVisitExtractor() {
-        super(new JdbcPetRowMapper(), new JdbcVisitRowMapper());
-    }
+    private final JdbcPetRowMapper petRowMapper = new JdbcPetRowMapper();
 
-    @Override
-    protected Integer mapPrimaryKey(ResultSet rs) throws SQLException {
-        return rs.getInt("pets.id");
-    }
+    private final JdbcVisitRowMapper visitRowMapper = new JdbcVisitRowMapper();
 
     @Override
-    protected Integer mapForeignKey(ResultSet rs) throws SQLException {
-        if (rs.getObject("visits.pet_id") == null) {
-            return null;
-        } else {
-            return rs.getInt("visits.pet_id");
+    public List<JdbcPet> extractData(ResultSet rs) throws SQLException {
+        Map<Integer, JdbcPet> petsById = new LinkedHashMap<Integer, JdbcPet>();
+        int row = 0;
+        while (rs.next()) {
+            Integer petId = rs.getInt("pets.id");
+            JdbcPet pet = petsById.get(petId);
+            if (pet == null) {
+                pet = this.petRowMapper.mapRow(rs, ++row);
+                petsById.put(petId, pet);
+            }
+            if (rs.getObject("visits.pet_id") != null) {
+                pet.addVisit(this.visitRowMapper.mapRow(rs, row));
+            }
         }
-    }
-
-    @Override
-    protected void addChild(JdbcPet root, Visit child) {
-        root.addVisit(child);
+        return new ArrayList<JdbcPet>(petsById.values());
     }
 }

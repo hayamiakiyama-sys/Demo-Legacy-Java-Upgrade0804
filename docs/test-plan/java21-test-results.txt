@@ -1,0 +1,13 @@
+[INFO] Running org.springframework.samples.petclinic.service.billing.InvoiceCsvExporterTests
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.396 s -- in org.springframework.samples.petclinic.service.billing.InvoiceCsvExporterTests
+[INFO] Running org.springframework.samples.petclinic.service.billing.ClosingSnapshotStoreTests
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in org.springframework.samples.petclinic.service.billing.ClosingSnapshotStoreTests
+[INFO] Running org.springframework.samples.petclinic.service.billing.MonthlyClosingServiceTests
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.292 s -- in org.springframework.samples.petclinic.service.billing.MonthlyClosingServiceTests
+[INFO] Running org.springframework.samples.petclinic.service.billing.BillingRateLoaderTests
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s -- in org.springframework.samples.petclinic.service.billing.BillingRateLoaderTests
+[INFO] Running org.springframework.samples.petclinic.service.billing.LegacyVisitImporterTests
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in org.springframework.samples.petclinic.service.billing.LegacyVisitImporterTests
+[INFO] Running org.springframework.samples.petclinic.web.OwnerControllerTests
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.993 s -- in org.springframework.samples.petclinic.web.OwnerControllerTests
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0

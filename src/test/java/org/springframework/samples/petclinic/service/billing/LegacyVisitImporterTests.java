@@ -3,7 +3,7 @@ package org.springframework.samples.petclinic.service.billing;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.io.FileWriter;
+
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -16,9 +16,8 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 /**
- * Pins the import of the file from the old accounting system (IF-07, BR-22). The century window is
- * pinned by writing SimpleDateFormat's internal field, which strong encapsulation blocks in newer
- * JDKs (T-07).
+ * Pins the import of the file from the old accounting system (IF-07, BR-22). The century window now
+ * comes from SimpleDateFormat#set2DigitYearStart, so the configured 1980 start is really applied.
  */
 public class LegacyVisitImporterTests {
 
@@ -39,16 +38,14 @@ public class LegacyVisitImporterTests {
     }
 
     @Test
-    public void readsTwoDigitYearsAsTheCurrentImplementationDoes() throws Exception {
+    public void readsTwoDigitYearsFromNineteenEighty() throws Exception {
         File file = write("7, 85/04/01 ,rabies shot,Sato", "7,79/12/31,checkup,Suzuki");
 
         List<LegacyVisitImporter.ImportedVisit> visits = new LegacyVisitImporter().read(file);
 
         assertEquals(2, visits.size());
         assertEquals("1985/04/01", format(visits.get(0).getVisitDate()));
-        // Writing defaultCenturyStart does not refresh SimpleDateFormat's cached start year, so the
-        // configured 1980 window is not actually applied: "79" is read as 1979, not 2079.
-        assertEquals("1979/12/31", format(visits.get(1).getVisitDate()));
+        assertEquals("2079/12/31", format(visits.get(1).getVisitDate()));
     }
 
     @Test
@@ -74,7 +71,7 @@ public class LegacyVisitImporterTests {
 
     private File write(String... lines) throws Exception {
         File file = folder.newFile("visits.csv");
-        PrintWriter writer = new PrintWriter(new FileWriter(file));
+        PrintWriter writer = new PrintWriter(file, "UTF-8");
         try {
             for (String line : lines) {
                 writer.println(line);

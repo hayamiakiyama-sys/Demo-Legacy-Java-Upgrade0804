@@ -1,7 +1,9 @@
 package org.springframework.samples.petclinic.service.billing;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -26,7 +28,7 @@ public class InvoiceCsvExporter {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(new FileWriter(file));
+            writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
             writer.println(HEADER);
             int sequence = 1;
             for (Invoice invoice : invoices) {

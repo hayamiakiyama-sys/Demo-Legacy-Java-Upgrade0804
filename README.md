@@ -3,19 +3,21 @@
 社内で長年稼働している動物病院の顧客・診療管理システムです。/
 In-house customer and visit management system for a veterinary clinic, in production for many years.
 
-- Java 8 / Spring Framework 5.0.x（XML設定）/ Spring MVC / JSP・JSTL / war
+- Java 21 / Spring Framework 6.1.x（XML設定）/ Spring MVC / JSP・JSTL / war
 - Hibernate（JPA）・Spring JDBC・Spring Data JPA の3実装をプロファイルで切替
 - 既定DB: HSQLDB（インメモリ）、本番相当: MySQL / PostgreSQL
 
-> 注意 / Note: 設計書・仕様書は保管場所が不明で、当時の担当者も既に異動済みです。テストコードもありません。/
-> The design documents cannot be located and the original developers have left. There is no test code.
+> 現行仕様は `docs/as-is/`、移行テスト計画は `docs/test-plan/`、Java 21 移行の内容と挙動変更は
+> `docs/migration/java21-migration-report.md` にあります。/
+> The recovered specification is in `docs/as-is/`, the migration test plan in `docs/test-plan/`, and the
+> migration result in `docs/migration/java21-migration-report.md`.
 
 ## ローカル実行 / Run locally
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 mvn clean package
-mvn tomcat7:run-war
+mvn jetty-ee10:run-war
 ```
 
 http://localhost:9966/petclinic/
