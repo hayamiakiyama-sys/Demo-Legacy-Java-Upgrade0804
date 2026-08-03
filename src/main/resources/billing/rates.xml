@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<billing-rates currency="JPY">
+    <rate pet-type="dog" unit-price="4500"/>
+    <rate pet-type="cat" unit-price="4000"/>
+    <rate pet-type="lizard" unit-price="5200"/>
+    <rate pet-type="snake" unit-price="5200"/>
+    <rate pet-type="bird" unit-price="3600"/>
+    <rate pet-type="hamster" unit-price="3000"/>
+    <rate pet-type="*" unit-price="3800"/>
+    <holiday-surcharge-rate>0.25</holiday-surcharge-rate>
+    <closing-day>25</closing-day>
+</billing-rates>
