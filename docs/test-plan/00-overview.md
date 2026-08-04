@@ -25,6 +25,7 @@ effort there.
 | `03-test-perspective-matrix.md` | Perspective × target function × priority × method × expected result |
 | `04-regression-baseline-strategy.md` | How to baseline current Java 8 behavior (golden masters, characterization tests) |
 | `05-execution-order-criteria.md` | Test execution order, entry/exit gates, pass/fail criteria |
+| `06-regression-results.md` | Implemented Java 8 characterization tests + executed results, coverage, and pinned discrepancies |
 
 ## Scope
 
