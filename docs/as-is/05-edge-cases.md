@@ -108,11 +108,18 @@ Observations are **[Confirmed]** from code; risk assessments are marked
   (`DiscountPluginLoader.java:30-37`).
 - **Two-digit year window** is pinned by writing the **private field**
   `SimpleDateFormat.defaultCenturyStart` via reflection; on failure it falls
-  back to `set2DigitYearStart` (`LegacyDateFormats.java:43-57`). **Risk under
-  migration:** JDK strong encapsulation (Java 16+) blocks reflective access to
-  JDK-internal fields; the `catch` logs a warning and falls back, so behavior
-  degrades rather than crashes, but the pinned window may differ.
-  **[Inference]**
+  back to `set2DigitYearStart` (`LegacyDateFormats.java:43-57`).
+  **Discrepancy (OQ-15), confirmed by characterization test:** writing
+  `defaultCenturyStart` directly does **not** refresh the derived
+  `defaultCenturyStartYear` pivot, so the intended `[1980, 2079]` window is not
+  actually achieved. On Java 8 `"79"` parses to **1979** (not 2079), while
+  `"80"`→1980, `"00"`→2000, `"13"`→2013. **Risk under migration:** JDK strong
+  encapsulation (Java 16+/JEP 403) blocks the reflective write; the `catch`
+  falls back to `set2DigitYearStart`, which **does** refresh the pivot — so the
+  same input parses to **2079** on Java 21. The two-digit-year interpretation
+  therefore changes across the migration for years in the affected range.
+  Pinned in `LegacyDateFormatsTests` /
+  `LegacyVisitImporterTests`. **[Confirmed]**
 
 ## 5.7 Serialization
 

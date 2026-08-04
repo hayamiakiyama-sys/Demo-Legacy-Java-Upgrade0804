@@ -139,3 +139,21 @@ merges (`JdbcVisitRepositoryImpl.java:62-69`, `JpaVisitRepositoryImpl.java:46-53
 
 Decision: Is "visits are immutable once created" a real business rule, or an
 incomplete JDBC implementation? Behavior differs by profile.
+
+## OQ-15 — Two-digit-year century pivot is wrong today (found via characterization)
+
+Observed: `LegacyDateFormats.importedVisitFormat` writes `SimpleDateFormat`'s
+private `defaultCenturyStart` field by reflection but never refreshes the
+derived `defaultCenturyStartYear` pivot (`LegacyDateFormats.java:43-57`). The
+intended `[1980, 2079]` window is therefore not achieved: on Java 8 `"79"`
+parses to **1979** (not 2079); `"80"`→1980, `"00"`→2000, `"13"`→2013. On
+Java 21 the reflective write is blocked (JEP 403) and the `catch` fallback
+`set2DigitYearStart(...)` refreshes the pivot, so the same input parses to
+**2079** — a behavior change across the migration. Confirmed and pinned by
+`LegacyDateFormatsTests` and `LegacyVisitImporterTests`.
+
+Decision: Which interpretation is correct for imported visit dates — the
+current Java-8 result (`"79"`→1979) or the intended 1980 pivot (`"79"`→2079)?
+The migration must deliberately choose one and re-baseline, rather than let the
+value silently flip. (This importer currently has no caller in `src/main`; see
+OQ-2.)
